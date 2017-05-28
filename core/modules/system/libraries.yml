@@ -1,0 +1,13 @@
+all:
+  js:
+    js/system.js: {}
+system.reference:
+  js:
+    js/reference.js: {}
+system.reference.add:
+  js:
+    /core/assets/validate/validate.min.js: {}
+    js/reference.js: {}
+system.modules:
+  js:
+    js/admin.system.js: {}

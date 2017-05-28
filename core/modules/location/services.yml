@@ -1,0 +1,4 @@
+services:
+    location:
+        class: Pyshnov\location\Location
+        arguments: ['@config']

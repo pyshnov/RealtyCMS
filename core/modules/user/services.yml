@@ -1,0 +1,9 @@
+services:
+    user:
+        class: Pyshnov\user\User
+    user.auth:
+        class: Pyshnov\user\UserAuth
+        arguments: ['@user']
+        parent: container.trait
+    user.action:
+        class: Pyshnov\user\UserAction

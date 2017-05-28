@@ -1,0 +1,5 @@
+feedback:
+  path: '/feedback/'
+  defaults:
+    _controller: '\Pyshnov\feedback\Feedback::init'
+    _title: 'Обратная связь'

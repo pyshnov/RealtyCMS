@@ -1,0 +1,24 @@
+sitemap:
+  path: '/sitemap.xml'
+  defaults:
+    _controller: '\Pyshnov\Component\SiteMap\SiteMap::run'
+data.location.base_topic:
+  path: '/{location}/{topic}/'
+  defaults:
+    _controller: '\Pyshnov\data\Controller\DataController::actionTopic'
+  requirements:
+    id: \d+
+data.object.view:
+  path: '/arenda/{topic}/realty{id}.{_format}'
+  defaults:
+    _controller: '\Pyshnov\data\Controller\DataController::actionObjectView'
+    _format: html
+  requirements:
+    id: \d+
+    _format: html|rss
+data.object12:
+  path: '/saint-petersburg1{_postfix}'
+  defaults:
+    _controller: '\Pyshnov\data\Controller\DataController::location'
+  requirements:
+    _postfix: /|.html

@@ -1,0 +1,15 @@
+user.admin:
+  path: '/admin/users/'
+  defaults:
+    _controller: '\Pyshnov\user\Controller\UserController::indexAction'
+    _title: 'Панель управления | Пользователи'
+  requirements:
+    _access: 'admin'
+user.signin:
+    path: /user/signin/
+    defaults:
+        _controller: '\Pyshnov\user\Controller\UserController::signIn'
+user.ajax.signin:
+    path: /ajax/signin/
+    defaults:
+        _controller: 'Pyshnov\user\Ajax\UserAjax::signIn'
