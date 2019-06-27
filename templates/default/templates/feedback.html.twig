@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-sm-24 col-md-18 col-lg-19 content">
+        {{ breadcrumb }}
+        {{ title }}
+        {% if success %}
+            <div class="messages messages--success">
+                {{ success }}
+            </div>
+        {% else %}
+            <p class="text-muted">Мы постоянно занимаемся улучшением проекта. Если у вас возникли вопросы, или есть
+                предложения, мы открыты для них.</p>
+            <br>
+            {% if error %}
+                <div class="messages messages--error">
+                    {% for item in error %}
+                        {{ item }} <br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <form id="feedbackForm" class="form-horizontal form_validator" method="post">
+                <div class="form-group">
+                    <label class="col-xs-6 control-label">Имя</label>
+                    <div class="col-xs-9">
+                        <input name="fio"
+                               value="{{ request.fio ? request.fio : is_anonymous ? '' : user.fio }}"
+                               type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-6 control-label">Email<span style="color: red;">*</span></label>
+                    <div class="col-xs-9">
+                        <input name="email"
+                               value="{{ request.email ? request.email : is_anonymous ? '' : user.email }}"
+                               type="text" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-6 control-label">Номер телефона</label>
+                    <div class="col-xs-9">
+                        <input id="phone" name="phone" type="text" class="form-control"
+                               value="{{ request.phone ? request.phone : is_anonymous ? '' : user.phone }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-6 control-label">Сообщение</label>
+                    <div class="col-xs-15">
+                        <textarea class="form-control" name="text" rows="8" required
+                                  placeholder="Ваши вопросы и пожелания">{{ request.text ? request.text : '' }}</textarea>
+                    </div>
+                </div>
+                {% if captcha %}
+                    <div class="form-group">
+                        <div class="col-xs-offset-6 col-xs-9">
+                            {{ captcha }}
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="form-group">
+                    <div class="col-xs-offset-6 col-xs-9">
+                        <button id="formsubmit" name="submit" class="btn btn-green">Отправить</button>
+                    </div>
+                </div>
+
+                <input type="hidden" name="id" value="{{ user_ip }}"/>
+                <input type="hidden" name="do" value="submit"/>
+            </form>
+        {% endif %}
+    </div>
+    <div class="col-md-6 col-lg-5 hidden-xs hidden-sm">
+        <div class="row">
+            {% include 'sidestatic.html.twig' %}
+        </div>
+    </div>
+</div>

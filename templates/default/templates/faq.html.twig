@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-sm-24 col-md-18 col-lg-19 content wrapper-faq">
+        {{ breadcrumb }}
+        {{ title }}
+        <p class="text-muted">Будем рады Вам помочь! Если возникнут вопросы, <a href="#faqFormAdd">напишите нам</a>.</p> <br>
+        <div class='content-faq'>
+            {% for row in page.rows %}
+                <div class='faq-item'>
+                    <div class="question" data-question-id="{{ row.id }}">{{ row.question }}</div>
+                    <div class="answer" data-answer-id="{{ row.id }}"><p>{{ row.answer }}</p></div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="clearfix"></div>
+
+        <div class="divider horizontal"><h3>Не нашли ответа?</h3></div>
+        <div class="form-success text-center"></div>
+        <form id="faqFormAdd" class="form-horizontal" method="post">
+            <div class="error alert alert-danger" style="display: none;" role="alert"></div>
+            <div class="form-group">
+                <label class="col-xs-6 control-label">Имя</label>
+                <div class="col-xs-9">
+                    <input name="author"
+                           value="{{ request.author is defined ? request.author : is_anonymous ? '' : user.fio }}"
+                           type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-6 control-label">Email</label>
+                <div class="col-xs-9">
+                    <input name="author_email"
+                           value="{{ request.author_email is defined ? request.author_email : is_anonymous ? '' : user.email }}"
+                           type="text" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-6 control-label">Сообщение</label>
+                <div class="col-xs-15">
+                        <textarea class="form-control" name="question" rows="4" required
+                                  data-error-msg="Поле не может содержать менее 5 символов."
+                                  placeholder="Текст Вашего вопроса или сообщения"></textarea>
+                </div>
+            </div>
+            {% if captcha %}
+                <div class="form-group">
+                    <div class="col-xs-offset-6 col-xs-9">
+                        {{ captcha }}
+                    </div>
+                </div>
+            {% endif %}
+            <div class="form-group">
+                <div class="col-xs-offset-6 col-xs-9">
+                    <button name="submit" class="btn btn-green">Отправить</button>
+                </div>
+            </div>
+
+            <input type="hidden" name="ip" value="{{ user_ip }}"/>
+            <input type="hidden" name="do" value="submit"/>
+        </form>
+
+    </div>
+    <div class="col-md-6 col-lg-5 hidden-xs hidden-sm">
+        <div class="row">
+            {% include 'sidestatic.html.twig' %}
+        </div>
+    </div>
+</div>

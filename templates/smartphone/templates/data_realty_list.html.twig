@@ -1,0 +1,76 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="link icon-only open-panel"><i class="icon mobile-menu"></i></a>
+        </div>
+        <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+        <div class="center sliding">NET-AGENTA.net</div>
+        <div class="right">
+            <a href="/" class="link icon-only external"><i class="f7-icons">search</i></a>
+        </div>
+    </div>
+</div>
+<!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
+<div class="pages navbar-through toolbar-through">
+    <!-- Page, "data-page" contains page name -->
+    <div data-page="data-list" class="page no-toolbar">
+        <!-- Scrollable page content -->
+        <div class="page-content hide-bars-on-scroll">
+
+            <div class="list-block">
+                <ul>
+                    <li>
+                        <div class="item-content">
+                            <div class="item-inner">
+                                <div class="item-title">
+                                    {{ data.count}} {{ data.count|plural('предложение', 'предложения', 'предложений') }}
+                                </div>
+                                <div class="item-after"><a href="#" class="data-sort-by" data-link="{{ data.link_sort }}"><i class="f7-icons">filter</i></a></div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            {% if data.count %}
+                <div class="list-block media-list realty-list" data-next_page="{{ next_page }}">
+                    <ul>
+                        {% set test = 0 %}
+                        {% for object in data.rows %}
+                            {% set test = test + 1 %}
+                            {% if test == 2 or test == 9 or test == 15 %}
+                                <li>
+                                    <div class="adsense {{ next_page }}">
+                                        <ins class="adsbygoogle"
+                                             style="display:block;"
+                                             data-ad-format="fluid"
+                                             data-ad-layout="image-side"
+                                             data-ad-layout-key="-h2-n+2i-6s+8n"
+                                             data-ad-client="ca-pub-5036721344262288"
+                                             data-ad-slot="4407841811"></ins>
+                                    </div>
+                                </li>
+                            {% endif %}
+                            <li>
+                                <a href="{{ object.getLink() }}" class="item-link item-content">
+                                    <div class="item-media">{{ object.getImage() }}</div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-title">{{ object.getPrice() }}<br>{{ object.category.id == 6 ? object.room_count : '' }}{{ object.category.name_list }}, {{ object.square() }} м<sup>2</sup>, {{ object.getFloor() }} этаж</div>
+                                        </div>
+                                        <div class="item-subtitle">{{ object.getAddress() }}</div>
+                                        <div class="item-text">{{ object.getMetro('') }}</div>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <p>Обектов не найдено</p>
+            {% endif %}
+            {% include 'footer.html.twig' %}
+        </div>
+    </div>
+</div>
+

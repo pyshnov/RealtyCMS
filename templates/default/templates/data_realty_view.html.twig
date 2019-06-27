@@ -1,0 +1,342 @@
+{#
+/**
+* Распечатать все доступные переменные для обекта
+* {{ dump(data_print) }}
+*
+*
+*/
+#}
+<div class="row">
+    <div class="col-md-6 col-lg-5">
+        <div class="row">
+            {% include 'sidebar_search.html.twig' %}
+        </div>
+    </div>
+    <div class="col-sm-24 col-md-18 col-lg-19 content object-view">
+        {{ breadcrumb }}
+        {{ title }}
+        <div class="view-address">
+            <i class="fa fa-map-marker fa-fw"></i>
+            {% set time_metro = data.time_metro ? ', ' ~ data.getTimeMetro : '' %}
+            {{ data.getAddress() }} {{ data.metro ? ', ст. ' ~ data.getMetro('') ~ time_metro : '' }}
+            <a id="toggle" class="link link-map" href="#" onclick="return false">Показать на карте</a>
+            <script src="//api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+            <script type="text/javascript">
+                ymaps.ready(init);
+                function init() {
+                    var myMap;
+                    $('#toggle').bind({
+                        click: function () {
+                            if (!myMap) {
+                                $('#map').css({'display': 'block'});
+                                $("#toggle").text('Скрыть карту');
+                                myMap = new ymaps.Map('map', {
+                                    center: [],
+                                    zoom: 12
+                                });
+                                ymaps.geocode('Россия, {{ data.city_name }} {{ data.getAddress() }}', {
+                                    results: 1
+                                }).then(function (res) {
+                                    var firstGeoObject = res.geoObjects.get(0),
+                                        coords = firstGeoObject.geometry.getCoordinates(),
+                                        bounds = firstGeoObject.properties.get('boundedBy');
+                                    myMap.geoObjects.add(firstGeoObject);
+                                    myMap.setBounds(bounds, {
+                                        checkZoomRange: true
+                                    });
+                                    myMap.geoObjects.add(new ymaps.Placemark(coords, {}, {
+                                        preset: 'islands#greenDotIcon'
+                                    }));
+                                });
+                                myMap.behaviors.disable(['scrollZoom']);
+                                $("#toggle").attr('value', 'Скрыть карту');
+
+                            } else {
+                                myMap.destroy();// Деструктор карты
+                                myMap = null;
+                                $('#map').css({'display': 'none'});
+                                $("#toggle").text('Показать на карте');
+                            }
+                        }
+                    });
+                }
+            </script>
+            <div id="map"></div>
+        </div>
+        <div class="divider"></div>
+        <div class="col-md-15">
+            <div class="object-description">
+                {% if data.image.count() %}
+                    <div class="fotorama" data-width="100%" data-nav="thumbs" data-allowfullscreen="true"
+                         data-keyboard="true" data-thumbmargin="5" data-minheight="300" data-maxheight="500"
+                         data-startindex="0">
+                        {% for image in data.image.toArray() %}
+                            {% set alt_d = 'Сдается ' ~ data.topic.name_list ~ (data.metro_id ? ', ст. ' ~ data.getMetro('') : '') ~ ', ' ~ data.getAddress() %}
+                            <a href="/uploads/data/{{ image.name }}">
+                                <img src="/uploads/data/thumbs/{{ image.name }}"
+                                     alt="{{ image.alt ? : alt_d }}">
+                            </a>
+                        {% endfor %}
+                    </div>
+                    <div class="divider"></div>
+                {% endif %}
+                <div class="text">
+                    {{ data.text|raw|nl2br }}
+                </div>
+                <div class="v-line-title">Характеристики помещения</div>
+                {% if data.square_all %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Площадь общая</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">{{ data.square_all }} м<sup>2</sup></div>
+                    </div>
+                {% endif %}
+                {% if data.square_rooms %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Площадь комнат{{ data.topic_id == 2 or data.topic_id == 3 ? 'ы' : '' }}</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">{{ data.square_rooms }} м<sup>2</sup></div>
+                    </div>
+                {% endif %}
+                {% if data.square_kitchen %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Площадь кухни</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">{{ data.square_kitchen }} м<sup>2</sup></div>
+                    </div>
+                {% endif %}
+                {% if data.room_count %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Количество комнат</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">{{ data.room_count }}</div>
+                    </div>
+                {% endif %}
+                {% if data.bathroom %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Санузел</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">{{ data.getBathroom() }}</div>
+                    </div>
+                {% endif %}
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Этаж</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.getFloor(' из ') }}</div>
+                </div>
+                <div class="v-line-title">Детали</div>
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Мебель</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.furniture ? 'Да' : 'Нет' }}</div>
+                </div>
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Холодильник</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.refrigerator ? 'Да' : 'Нет' }} </div>
+                </div>
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Стир. машина</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.washing_machine ? 'Да' : 'Нет' }}</div>
+                </div>
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Телевизор</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.television ? 'Да' : 'Нет' }} </div>
+                </div>
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Телефон</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.is_telephone ? 'Да' : 'Нет' }}</div>
+                </div>
+                {% if data.internet %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Интернет</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">Да</div>
+                    </div>
+                {% endif %}
+                {% if data.children %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Можно с детьми</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">Да</div>
+                    </div>
+                {% endif %}
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Можно с животными</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.animal ? 'Да' : 'Нет' }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="row">
+                <div class="view-right-sidebar">
+                    <div class="view-price">{{ data.getPrice() }}</div>
+                    <div class="date-and-views">
+                        <p>Опубликовано: {{ data.getDataAdd() }} <br>
+                            Просмотренно: {{ data.view_count }} {{ data.view_count|plural('раз', 'раза', 'раз') }}</p>
+                    </div>
+                    <div class="divider-dashed"></div>
+                    {% if data.active == 0 and data.status_data != 2 %}
+                        <div class="realty-warning">
+                            <i class="fa fa-exclamation-triangle fa-fw"></i> Объявление устарело или снято с публикации.
+                        </div>
+                    {% else %}
+                    {% if date(data.date_added) < date('-3days') %}
+                        <div class="realty-warning">
+                            <i class="fa fa-exclamation-triangle fa-fw"></i> Объявлению более трех дней, возможно сдано.
+                        </div>
+                    {% endif %}
+                        <div class="v-side-fio">
+                            {{ data.fio ? : 'Собственник' }}
+                            <span class="pull-right btn-popover" data-container="body" data-toggle="popover"
+                                  data-placement="left"
+                                  data-content="Если с вас будут требовать комиссию или плату за агентские услуги, просим пожаловаться в службу поддержи, используя кнопку «Пожаловаться», расположенную ниже.">!</span>
+                        </div>
+                        <div class="phone">+7 ({{ data.phone|slice(-10, 3) }}) XXX-XX-XX</div>
+                    {% if is_authenticated %}
+                        <a id="openPhone" data-id="{{ data.id }}" class="btn btn-green btn-block open-phone" href="#">
+                            <span class="fa fa-phone fa-fw" aria-hidden="true"></span>Показать телефон
+                        </a>
+                    {% else %}
+                        <a class="btn btn-green btn-block open-phone" href="#" data-toggle="modal"
+                           data-target="#modalAuth">
+                            <span class="fa fa-phone fa-fw" aria-hidden="true"></span>Показать телефон
+                        </a>
+                        <div class="phone-info-block">
+                            <p>Для просмотра контактной информации необходимо <a href="#" data-toggle="modal"
+                                                                                 data-target="#modalAuth">войти</a> на
+                                сайт.</p>
+                            <p>Если вы первый раз на нашем сайте, пройдите бесплатную <a
+                                        href="/register/">регистрацию</a>.</p>
+                        </div>
+                    {% endif %}
+                    {% if data_complaint.isDisplay() %}
+                        <div class="side-notice">
+                            <p>Не забудьте <a class="link" href="/help/">поддержать проект</a> после того как сняли
+                                жилье. </p>
+                            Пожалуйста, нажмите "Пожаловаться" если это посредник или объект уже сдан.<br>
+                            Спасибо :)
+                        </div>
+                    {% endif %}
+                        <div class="divider-dashed"></div>
+                        {{ data_complaint }}
+                    {% if is_authenticated %}
+                        <div class="v-favorites">
+                            {% if is_favorite %}
+                                <a class="remove_favorites" data-id="{{ data.id }}" title="Убрать из избранного"
+                                   href="#">
+                                    <i class="fa fa-star"></i> Из избранного
+                                </a>
+                            {% else %}
+                                <a class="add_favorites" data-id="{{ data.id }}" title="Добавить в избранное" href="#">
+                                    <i class="fa fa-star-o"></i> В избранное
+                                </a>
+                            {% endif %}
+                        </div>
+                        <div class="divider-dashed"></div>
+                    {% endif %}
+                        <div class="clearfix"></div>
+                        <p>Делитесь с друзьями! </p>
+
+                        <script type="text/javascript" src="//yastatic.net/share/share.js" charset="utf-8"></script>
+                        <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="small"
+                             data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir"
+                             data-yashareTheme="counter"></div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% if similar is not empty %}
+            <div class="clearfix"></div>
+            <script>
+                $(document).ready(function() {
+                    $('.owl-carousel').owlCarousel({
+                        loop:true,
+                        margin: 8,
+                        lazyLoad: true,
+                        responsiveClass:true,
+                        responsive:{
+                            768:{
+                                items:3,
+                                nav:false
+                            },
+                            1200:{
+                                items:4,
+                                nav:false,
+                                loop:false
+                            }
+                        }
+                    })
+                });
+            </script>
+            <div class="similar-block">
+                <div class="divider horizontal">Похожие предложения</div>
+                <div class="owl-carousel">
+                    {% for item in similar %}
+                        <div>
+                            <a href="{{ item.getLink() }}">
+                                <div class="similar-item">
+                                    <div class="similar-img">
+                                        {{ item.getImage() }}
+                                    </div>
+                                    <div class="similar-content">
+                                        <div class="similar-options">
+                                            <div class="similar-options-item">
+                                                <div class="similar-options-item-label">Площадь, м <sup>2</sup></div>
+                                                <div class="similar-options-item-value">{{ item.square() }}</div>
+                                            </div>
+                                            <div class="similar-options-item">
+                                                <div class="similar-options-item-label">руб.
+                                                    / {{ item.lease_period == 1 ? 'месяц' : 'сутки' }}</div>
+                                                <div class="similar-options-item-value">{{ item.price|price }}</div>
+                                            </div>
+                                        </div>
+                                        <p class="title">{{ item.category.id == 6 ? item.room_count : '' }}{{ item.category.name_list }}
+                                            в аренду</p>
+                                        {% if item.metro_id %}
+                                            <div class="similar-metro">
+                                                <i class="similar-metro-icon"></i>{{ item.metro }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<div class="register-form">
+    <form id="registerForm" action="/register/" method="post">
+        {% if error %}
+            <div class="messages messages--error">
+                {% for item in error %}
+                    {{ item }} <br>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <h1>Регистрация на «NET AGENTA»</h1>
+        <p class="">У вас уже есть аккаунт? <a class="link" data-toggle="modal" data-target="#modalAuth" href="#">Войти.</a></p>
+        <div class="form-group">
+            <input type="email" placeholder="Email..." name="email" class="form-control" data-error-msg="Поле Email обязательно к заполнению" required>
+        </div>
+        <div class="form-group">
+            <input id="inputPassword" type="password" placeholder="Пароль..." name="password" class="form-control" min="5" data-error-msg="Пароль не может быть короче 5 символов" required>
+        </div>
+        <div class="form-group">
+            <input type="password" placeholder="Повторите пароль..." name="password2" class="form-control" data-error-msg="Пароли не совпадают" required>
+        </div>
+        <div class="form-group">
+            <input type="text" placeholder="Ваше имя..." name="fio" class="form-control">
+        </div>
+        <div class="form-group">
+            <div class="register-concord-text">Регистрируясь, вы принимаете условия<br>
+                <a href="/polzovatelskoe-soglashenie/"><strong>пользовательского соглашения</strong></a></div>
+        </div>
+        <div class="form-group">
+            <button class="btn btn-green btn-block" type="submit"><strong>Зарегистрироваться</strong></button>
+        </div>
+        <input type="hidden" name="ip" value="{{ ip }}">
+        <input type="hidden" name="do" value="register">
+    </form>
+    <div class="clearfix"></div>
+    <div class="horizontal divider">Или</div>
+    <div class="register-text-social text-center">Быстрый вход через социальные сети</div>
+    {{ social_auther }}
+</div>

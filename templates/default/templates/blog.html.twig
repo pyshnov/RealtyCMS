@@ -1,0 +1,56 @@
+<div class="row">
+    <div class="col-sm-24 col-md-18 col-lg-19 content">
+        {{ breadcrumb }}
+        {{ title }}
+        <div class="blog-row">
+            {% if page.rows %}
+                {% for row in page.rows %}
+                    <div class="col-xs-8">
+                        <a href="{{ row.url }}">
+                            <div class="blog-preview-block">
+                                <div class="blog-preview-img">
+                                    {% if row.image %}
+                                        <img src="/uploads/blog/{{ row.image }}" alt="">
+                                    {% endif %}
+                                </div>
+                                <div class="blog-preview-content">
+                                    <p class="title">{{ row.name }}</p>
+                                    <p>{{ row.anons }}</p>
+                                    <div class="blog-preview-bottom">
+                                        <span class="pull-left"><i class="fa fa-eye fa-fw" aria-hidden="true"></i>{{ row.views }}</span>
+                                        <span class="pull-right">{{ row.date|date_format }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>Список статей пуст.</p>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-5 hidden-xs hidden-sm">
+        <div class="row">
+            <div class="sidebar sidebar-menu">
+                <a class="nav-link" href="/blog/">Все статьи</a>
+                <a class="nav-link" href="/blog/sovety/">Советы</a>
+                <a class="nav-link" href="/blog/novosti-rynka/">Новости рынка</a>
+                <a class="nav-link" href="/blog/istorii/">Истории</a>
+            </div>
+
+            <div class="sidebar adsense">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-5036721344262288"
+                     data-ad-slot="3621112056"
+                     data-ad-format="auto"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,75 @@
+<div class="row">
+    <div class="col-md-6 col-lg-5">
+        <div class="row">
+            {% include 'sidebar_account.html.twig' %}
+        </div>
+    </div>
+    <div class="col-sm-24 col-md-18 col-lg-19 content">
+        {{ breadcrumb }}
+        {{ title }}
+        {% if page.count %}
+            <div class="search-controls">
+                <div class="pull-left">
+                    Найдено {{ page.count}} {{ page.count|plural('предложение', 'предложения', 'предложений') }}
+                </div>
+                <div class="pull-right">
+                    <script>
+                        $(document).ready(function(){
+                            $('#inputSortBy').change(function(){
+                                window.location = '{{ page.link_sort_by }}' + $('#inputSortBy option:selected').data('id');
+                            });
+                        });
+                    </script>
+                    <noindex>
+                        <select id="inputSortBy" title="Сортировать" data-width="fit">
+                            <option data-id="date_added&asc=desc">по умолчанию</option>
+                            <option data-id="date_added&asc=asc">сначала старые</option>
+                            <option data-id="price&asc=asc">сначала недорогие</option>
+                            <option data-id="price&asc=desc">сначала дорогие</option>
+                        </select>
+                    </noindex>
+                </div>
+            </div>
+            <div class="realty-list-container">
+                {% for object in page.data %}
+                    <div class="realty-list account">
+                        <div class="col-xs-5 hidden-md col-lg-5">
+                            <div class="row">
+                            <span class="r-l-img">
+                                {{ object.getImage() }}
+                            </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-19 col-md-24 col-lg-19">
+                            <div class="realty-list-content">
+                                <div class="r-l-type">{{ object.category.id == 6 ? object.room_count : '' }} {{ object.category.name_list }} в аренду, {{ object.square() }} м<sup>2</sup> {{ object.getMetro() }}</div>
+                                <div class="r-l-address">
+                                    {{ object.city_name }}, {{ object.getAddress() }}
+                                </div>
+                                <small class="text-muted data_add">Размещено: {{ object.getDataAdd() }} <span class="data_status">{{ object.status_name }}</span></small>
+                                <div class="r-l-description">
+                                    {% if object.active == 1 or object.status_data == 2 %}
+                                        <button class="btn btn-default btn-sm objectDeactivate" data-id="{{ object.id }}">Деактивировать</button>
+                                    {% else %}
+                                        <button class="btn btn-default btn-sm objectActivate" data-id="{{ object.id }}">Активировать</button>
+                                    {% endif %}
+                                    <a href="/account/data_edit-{{ object.id }}/" class="btn btn-default btn-sm">Редактировать</a>
+                                    <button class="btn btn-default btn-sm objectDelete" data-id="{{ object.id }}">Удалить</button>
+                                </div>
+                                <div class="r-l-bottom">
+                                    <a class="preview" href="{{ object.getLink() }}">Просмотреть</a>
+                                </div>
+
+                                <div class="r-l-price">{{ object.getPrice() }}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            {{ page.pager  }}
+        {% else %}
+            <p>У Вас пока нет объявлений</p>
+        {% endif %}
+
+    </div>
+</div>

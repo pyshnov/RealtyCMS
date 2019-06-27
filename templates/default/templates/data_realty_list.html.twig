@@ -1,0 +1,106 @@
+<div class="row">
+    <div class="col-md-6 col-lg-5">
+        <div class="row">
+            {% include 'sidebar_search.html.twig' %}
+        </div>
+    </div>
+    <div class="col-sm-24 col-md-18 col-lg-19 content">
+        {{ breadcrumb }}
+        {{ title }}
+        <div class="search-controls">
+            <div class="pull-left">
+                {{ data.count}} {{ data.count|plural('предложение', 'предложения', 'предложений') }}
+                по аренде в {{ city_name('p') }}
+            </div>
+            {% if data.count %}
+                <div class="pull-right">
+                    <script>
+                        $(document).ready(function(){
+                            $('#inputSortBy').change(function(){
+                                window.location = '{{ data.link_sort }}' + $('#inputSortBy option:selected').data('id');
+                            });
+                        });
+                    </script>
+                    <noindex>
+                        <select id="inputSortBy" title="Сортировать" data-width="fit">
+                            <option data-id="date_added&asc=desc">по умолчанию</option>
+                            <option data-id="date_added&asc=asc">сначала старые</option>
+                            <option data-id="price&asc=asc">сначала недорогие</option>
+                            <option data-id="price&asc=desc">сначала дорогие</option>
+                        </select>
+                    </noindex>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if data.count %}
+            <div class="realty-list-container">
+                {% set test = 0 %}
+                {% for object in data.rows %}
+                    {% set test = test + 1 %}
+                    {% if test == 2 or test == 9 or test == 15 %}
+                    <div class="realty-list">
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-format="fluid"
+                             data-ad-layout="image-side"
+                             data-ad-layout-key="-ge-1w+4t-40+e7"
+                             data-ad-client="ca-pub-5036721344262288"
+                             data-ad-slot="3828740396"></ins>
+                        <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                    {% endif %}
+                    <a  href="{{ object.getLink() }}" class="realty-list{{ object.bold_status_end ? ' item_colorized' : '' }}">
+                        <div class="col-xs-5 hidden-md col-lg-5">
+                            <div class="row">
+                            <span class="r-l-img">
+                                {{ object.getImage() }}
+                            </span>
+                            </div>
+                        </div>
+                        <div class="col-xs-19 col-md-24 col-lg-19">
+                            <div class="realty-list-content">
+                                <div class="r-l-type">{{ object.category.id == 6 ? object.room_count : '' }}{{ object.category.name_list }} в аренду, {{ object.square() }} м<sup>2</sup> {{ object.getMetro() }}</div>
+                                <div class="r-l-address">
+                                    {{ object.city_name }}, {{ object.getAddress() }}
+                                </div>
+                                <div class="text-muted data_add">Размещено: {{ object.getDataAdd() }}</div>
+                                <div class="r-l-description">
+                                    {% set text = object.text|striptags %}
+                                    {% if text|length > 150 %}
+                                        {{ text[:150] }}...
+                                    {% else %}
+                                        {{ text }}
+                                    {% endif %}
+                                </div>
+                                <div class="r-l-bottom">
+                                    <div class="r-l-floor">
+                                        <span>Этаж:</span> {{ object.getFloor() }}
+                                    </div>
+                                </div>
+
+                                <div class="r-l-price">{{ object.getPrice() }}</div>
+                            </div>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            {{ data.pager }}
+        {% else %}
+            <p>Обектов не найдено</p>
+        {% endif %}
+        {#<div class="bottom-ads">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-5036721344262288"
+                 data-ad-slot="9788710055"
+                 data-ad-format="auto"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>#}
+
+    </div>
+</div>

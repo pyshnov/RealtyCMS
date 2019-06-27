@@ -1,0 +1,34 @@
+all:
+  css:
+    css/font-awesome.min.css: {}
+    css/animate.css: {}
+    css/style.css: {}
+  js:
+    js/bootstrap.min.js: {}
+    /core/assets/bootstrap-select/js/bootstrap-select.min.js: {}
+    /core/assets/validate/validate.min.js: {}
+    js/main.js: {}
+data.realty.view:
+  js:
+    owlcarousel/owl.carousel.min.js: {}
+    fotorama/fotorama.js: {}
+  css:
+    owlcarousel/assets/owl.carousel.min.css: {}
+    owlcarousel/assets/owl.theme.default.min.css: {}
+    fotorama/fotorama.css: {}
+data.add:
+  js:
+    /core/assets/jquery.maskedinput.min.js: {}
+    js/data_add.js: {}
+    js/data.js: {}
+user.data.edit:
+  js:
+    /core/assets/jquery.maskedinput.min.js: {}
+    js/data.js: {}
+user.profile:
+  js:
+    /core/assets/jquery.maskedinput.min.js: {}
+    js/user.account.js: {}
+user.data:
+  js:
+    js/user.account.js: {}

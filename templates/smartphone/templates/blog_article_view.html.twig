@@ -1,0 +1,33 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            {% if is_xml %}
+                <a href="{{ link_base_object }}" class="back link">
+                    <i class="f7-icons">left</i>
+                </a>
+            {% else %}
+                <a href="#" class="link icon-only open-panel">
+                    <i class="icon mobile-menu"></i>
+                </a>
+            {% endif %}
+        </div>
+        <div class="center sliding">NET-AGENTA.net</div>
+        <div class="right">
+            <a href="/" class="link icon-only external"><i class="f7-icons">search</i></a>
+        </div>
+    </div>
+</div>
+
+<div class="pages navbar-through toolbar-through">
+    <div data-page="blog-article" class="page no-toolbar">
+        <!-- Scrollable page content -->
+        <div class="page-content hide-bars-on-scroll">
+            <div class="content-block blog-article">
+                {{ title }}
+                <div class="article-date text-muted"><i class="fa fa-clock-o fa-fw"></i> {{ page.date|date_format }}</div>
+                {{ page.body }}
+            </div>
+            {% include 'footer.html.twig' %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="col-sm-24 col-md-18 col-lg-19 content">
+        {{ breadcrumb }}
+        {{ title }}
+        <p class="text-muted">Нам очень важно Ваше мнение! Оставьте свой отзыв о проекте.</p>
+        {% if reviews %}
+            <div class="reviews">
+                {% for review in reviews %}
+                    <div class="review-item">
+                        <div class="review-fio">{{ review.author }}</div>
+                        <div class="review-date-add">{{ review.date|date_format }}</div>
+                        <div class="clearfix"></div>
+                        <div class="review-body">{{ review.review }}</div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            Отзывы отсутствуют
+        {% endif %}
+    </div>
+    <div class="col-md-6 col-lg-5 hidden-xs hidden-sm">
+        <div class="row">
+            <div class="sidebar review_sidebar">
+                <h4>Оставьте свой отзыв</h4>
+                <form id="ajaxReviewAdd">
+                    <p class="m-small">Мы стремимся сделать наш сайт лучше и удобнее. Стараемся учитывать все Ваши отзывы и пожелания.</p>
+                    <div class="review_error"></div>
+                    <div class="form-group">
+                        <input placeholder="Ваше имя" class="form-control" type="text" name="author" required>
+                    </div>
+                    <div class="form-group">
+                        <input placeholder="Ваш Email" class="form-control" type="text" name="author_email">
+                    </div>
+                    <div class="form-group">
+                        <textarea name="review" class="form-control" rows="4" placeholder="Вы можете описать обслуживание и работу сайта в общем" required></textarea>
+                    </div>
+                    {% if captcha %}
+                        <div class="form-group">
+                            <style>
+                                .g-recaptcha {
+                                    transform:scale(0.7);
+                                    -webkit-transform:scale(0.7);
+                                    transform-origin:0 0;
+                                    -webkit-transform-origin:0 0;
+                                }
+                            </style>
+                            {{ captcha }}
+                        </div>
+                    {% endif %}
+                    <button type="sumbit" class="btn btn-green btn-block btn-sm">Отправить отзыв</button>
+                </form>
+            </div>
+            <div class="sidebar adsense">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-5036721344262288"
+                     data-ad-slot="3621112056"
+                     data-ad-format="auto"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,186 @@
+{#
+/**
+* {{ head|raw }}
+* {{ css|raw }}
+* {{ js.head|raw }}
+* {{ js.footer|raw }}
+* {{ is_smartphone }}
+* {{ is_tablet }}
+* {{ is_desktop }}
+* {{ is_debug }}
+* {{ charset }}
+* {{ is_admin }}
+* {{ is_authenticated }}
+* {{ is_anonymous }}
+* {{ key }}
+* {{ user_ip }}
+*
+*
+*/
+#}
+<!doctype html>
+<html lang="ru">
+<head>
+    {{ head|raw }}
+    <link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body>
+<!-- Status bar overlay for full screen mode (PhoneGap) -->
+<div class="statusbar-overlay"></div>
+<!-- Panels overlay-->
+<div class="panel-overlay"></div>
+<!-- Left panel with reveal effect-->
+<div class="panel panel-left panel-reveal">
+    <div class="content-block">
+        <div class="list-block">
+            <ul>
+                <li>
+                    {% if is_anonymous %}
+                    <a href="#" class="item-link item-content open-login-screen">
+                        <div class="item-media"><i class="f7-icons">login</i></div>
+                        <div class="item-inner">
+                            <div class="item-title">Войти</div>
+                        </div>
+                    </a>
+                    {% else %}
+                        <div class="item-content">
+                            <div class="item-media"><i class="f7-icons">person</i></div>
+                            <div class="item-inner">
+                                <div class="item-title">{{ user.email }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </li>
+                <li>
+                    <a href="/" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">search</i></div>
+                        <div class="item-inner">
+                            <div class="item-title">Новый поиск</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ link_base_object }}" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">list</i></div>
+                        <div class="item-inner">
+                            <div class="item-title">Объявления</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/favorites/" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">heart</i></div>
+                        <div class="item-inner">
+                            <div class="item-title">Избранное</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="/add/" class="item-link item-content">
+                        <div class="item-media"><i class="f7-icons">add_round</i></div>
+                        <div class="item-inner">
+                            <div class="item-title">Создать объявление</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- Views -->
+<div class="views">
+    <!-- Your main view, should have "view-main" class -->
+    <div class="view view-main">
+        {{ content }}
+    </div>
+</div>
+{% if is_anonymous %}
+<div class="login-screen">
+    <div class="view">
+        <div class="page">
+            <div class="page-content login-screen-content">
+                <div class="login-screen-title">Вход</div>
+                <form class="ajax-form-login">
+                    <div class="list-block">
+                        <ul>
+                            <li class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Email</div>
+                                    <div class="item-input">
+                                        <input type="text" name="email" placeholder="Email или логин">
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="item-content">
+                                <div class="item-inner">
+                                    <div class="item-title label">Пароль</div>
+                                    <div class="item-input">
+                                        <input type="password" name="pass" placeholder="Пароль">
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="list-block">
+                        <ul>
+                            <li><a href="#" class="item-link list-button">Войти</a></li>
+                        </ul>
+                    </div>
+                </form>
+                <div class="list-block">
+                    <div class="list-block-label">
+                        <p>
+                            <div class="modal-register">
+                                Вы здесь впервые?<br>
+                                <a class="external" href="/register/">Зарегистрироваться</a>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                <div class="list-block">
+                    <ul>
+                        <li>
+                            <a href="#" class="close-login-screen list-button">Закрыть</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{{ js.footer|raw }}
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter26097690 = new Ya.Metrika({
+                    id:26097690,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/26097690" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</body>
+</html>

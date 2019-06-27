@@ -1,0 +1,80 @@
+<div class="row">
+    <div class="col-sm-24 col-md-18 col-lg-19 content">
+        <div class="content">
+            {{ breadcrumb }}
+            {{ title }}
+            {% if data.count %}
+                <div class="realty-list-container">
+                    {% for object in data.rows %}
+                        <a  href="{{ object.getLink() }}" class="realty-list{{ object.bold_status_end ? ' item_colorized' : '' }}">
+                            <div class="col-xs-5 hidden-md col-lg-5">
+                                <div class="row">
+                            <span class="r-l-img">
+                                {{ object.getImage() }}
+                            </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-19 col-md-24 col-lg-19">
+                                <div class="realty-list-content">
+                                    <div class="r-l-type">{{ object.category.id == 6 ? object.room_count : '' }}{{ object.category.name_list }} в аренду, {{ object.square() }} м<sup>2</sup> {{ object.getMetro() }}</div>
+                                    <div class="r-l-address">
+                                        {{ object.city_name }}, {{ object.getAddress() }}
+                                    </div>
+                                    <small class="text-muted data_add">Размещено: {{ object.getDataAdd() }}</small>
+                                    <div class="r-l-description">
+                                        {% set text = object.text|striptags %}
+                                        {% if text|length > 150 %}
+                                            {{ text[:150] }}...
+                                        {% else %}
+                                            {{ text }}
+                                        {% endif %}
+                                    </div>
+                                    <div class="r-l-bottom">
+                                        <div class="r-l-floor">
+                                            <span>Этаж:</span> {{ object.getFloor() }}
+                                        </div>
+                                    </div>
+
+                                    <div class="r-l-price">{{ object.getPrice() }}</div>
+                                </div>
+                            </div>
+                        </a>
+                    {% endfor %}
+                </div>
+                {{ data.pager  }}
+            {% else %}
+                <p>Вы не добавили в избранное ни одного предложения.</p>
+            {% endif %}
+            <div class="bottom-ads">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-5036721344262288"
+                     data-ad-slot="9788710055"
+                     data-ad-format="auto"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-5">
+        <div class="row">
+            <div class="hidden-xs hidden-sm">
+                <div id="yandex_ads">
+                    <div class="sidebar">
+                        <ins class="adsbygoogle"
+                             style="display:block"
+                             data-ad-client="ca-pub-5036721344262288"
+                             data-ad-slot="3621112056"
+                             data-ad-format="auto"></ins>
+                        <script>
+                            (adsbygoogle = window.adsbygoogle || []).push({});
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

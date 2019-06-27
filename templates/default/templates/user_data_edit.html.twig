@@ -1,0 +1,326 @@
+<div class="col-sm-24 col-md-16 col-lg-17 col-xl-18 content">
+    <div class="row">
+        {{ breadcrumb }}
+        {{ title }}
+        {% if success %}
+            <p>{{ success }}</p>
+        {% else %}
+            {% if is_anonymous %}
+                <div class="messages messages--warning">
+                    <div class="message--title">Внимание!</div>
+                    <p>Если вы в дальнейшем хотите управлять своими объявлениями, рекомендуем вам авторизоваться. Если вы впервые на нашем сайте, пройдите бесплатную <a href='/register/'>регистрацию</a>.</p>
+                </div>
+            {% endif %}
+            {% if error %}
+                <div class="messages messages--error">
+                    {% for item in error %}
+                        {{ item }} <br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <form id="formEdit" class="form-horizontal" enctype="multipart/form-data" method="post">
+
+                <div class="form-group">
+                    <label class="col-xs-5 control-label">Тип жилья<span style="color: red;">*</span></label>
+                    <div class="col-xs-8">
+                        {{ category }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label">Цена<span style="color: red;">*</span></label>
+                    <div class="col-xs-8">
+                        <div class="input-group">
+                            <input id="price" class="form-control price-mask" type="text" name="price" value="{{ object.price }}" required data-error-msg="Укажите пожалуйста цену">
+                            <div class="input-group-btn">
+                                <span class="btn btn-default dis" ><i class="fa fa-rub" aria-hidden="true"></i></span>
+                                <select name="lease_period">
+                                    <option value="1"{{ object.lease_period == 1 ? ' selected' : '' }}>В месяц</option>
+                                    <option value="2"{{ object.lease_period == 2 ? ' selected' : '' }}>Сутки</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-18">
+                        <div class="divider horizontal">Местоположение</div>
+                    </div>
+                </div>
+                <div class="form-group" id="formMetro">
+                    <div class="clearfix"></div>
+                    <label class="col-xs-5 control-label">Город</label>
+                    <div class="col-xs-8">
+                        <select class="form-control" disabled>
+                            <option value="{{ object.city_id }}" selected>{{ object.city_name }}</option>
+                        </select>
+                        <input type="hidden" name="city_id" value="{{ object.city_id }}">
+                    </div>
+                </div>
+                {% if district %}
+                <div class="form-group" id="formDistrict">
+                    <label class="col-xs-5 control-label">Район</label>
+                    <div class="col-xs-8">
+                        {{ district }}
+                    </div>
+                </div>
+                {% endif %}
+                {% if metro %}
+                <div class="form-group" id="formMetro">
+                    <label class="col-xs-5 control-label">Метро</label>
+                    <div class="col-xs-8">
+                        {{ metro }}
+                    </div>
+                </div>
+                <div class="form-group" id="timeMetro">
+                    <label class="col-xs-5 control-label">До метро</label>
+                    <div class="col-xs-8">
+                        <div class="input-group">
+                            <input type="text" name="time_metro" value="{{ object.time_metro }}" class="form-control">
+                            <div class="input-group-btn">
+                                <select name="how_to_get">
+                                    <option value="0"{{ object.how_to_get == 0 ? ' selected' : '' }}>Пешком</option>
+                                    <option value="1"{{ object.how_to_get == 1 ? ' selected' : '' }}>Транспортом</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="form-group">
+                    <label class="col-xs-5 control-label" for="address">Адрес<span  style="color: red;">*</span></label>
+                    <div class="col-xs-8">
+                        <input id="address" type="text" name="address" value="{{ object.street }} {{ object.number }}" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-18">
+                        <div class="divider horizontal">Подробнее</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label">Описание</label>
+                    <div class="col-xs-18">
+                        <textarea class="form-control" name="text" rows="7"
+                                  placeholder="Опишите как можно подробнее, полнота информации повышает интерес к вашему предложению. Запрещается указывать контактные данные и ссылки!">{{ object.text }}</textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-18">
+                        <div class="divider horizontal">Фото объекта</div>
+                        <p>Первая фотография будет отображаться в результатах поиска, выберите наиболее удачную. Максимальный размер фотографии — 10 МБ, не более 20 файлов.</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-18">
+                        {{ data_form.getDropzone() }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-6 col-xs-15">
+                        {{ data_form.uploadsImgForm(object.image, object.id) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-18">
+                        <div class="divider horizontal">Параметры объекта</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label">Этаж и этажность</label>
+                    <div class="col-xs-8">
+                        <div class="input-group-spacer">
+                            <input class="form-control" type="text" name="floor" value="{{ object.floor }}">
+                            <div class="input-group-btn">
+                                <span class="btn">/</span>
+                            </div>
+                            <input class="form-control" type="text" name="floor_count" value="{{ object.floor_count }}">
+                        </div>
+                    </div>
+                </div>
+                <div id="roomCount" class="form-group refresh_topic" data-show="2,6,9" style="display: none;">
+                    <label class="col-xs-5 control-label">Общее количество комнат<span style="color: red;">*</span></label>
+                    <div class="col-xs-8">
+                        <input name="room_count" value="{{ object.room_count }}" type="text" class="form-control" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label">Общая площадь</label>
+                    <div class="col-xs-8">
+                        <div class="input-group">
+                            <input type="text" name="square_all" value="{{ object.square_all }}" class="form-control">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">м²</button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="squareLive" class="form-group refresh_topic" data-show="3,4,5,6,9" style="display: none;">
+                    <label class="col-xs-5 control-label">Жилая площадь</label>
+                    <div class="col-xs-8">
+                        <div class="input-group">
+                            <input type="text" name="square_live" value="{{ object.square_live }}" class="form-control">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">м²</button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div id="squareRooms" class="form-group refresh_topic" data-show="2,3,4,5,6,9" style="display: none;">
+                    <label class="col-xs-5 control-label square_rooms">Площадь комнат</label>
+                    <div class="col-xs-8">
+                        <div class="input-group">
+                            <input type="text" name="square_rooms" value="{{ object.square_rooms }}" class="form-control">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">м²</button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label">Площадь кухни</label>
+                    <div class="col-xs-8">
+                        <div class="input-group">
+                            <input type="text" name="square_kitchen" value="{{ object.square_kitchen }}" class="form-control">
+                            <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">м²</button>
+                        </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label">Санузел</label>
+                    <div class="col-xs-8">
+                        <select name="bathroom" class="form-control">
+                            <option value="0">Не указано</option>
+                            <option value="1"{{ object.bathroom == 1 ? ' selected' : '' }}>Совмещенный</option>
+                            <option value="2"{{ object.bathroom == 2 ? ' selected' : '' }}>Раздельный</option>
+                            <option value="3"{{ object.bathroom == 3 ? ' selected' : '' }}>2 и более</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-8">
+                        <div class="checkbox">
+                            <input name="furniture" id="furniture" value="1" type="checkbox"{{ object.furniture ? ' checked' : '' }}>
+                            <label for="furniture">Мебель</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-8">
+                        <div class="checkbox">
+                            <input name="refrigerator" id="refrigerator" value="1" type="checkbox"{{ object.refrigerator ? ' checked' : '' }}>
+                            <label for="refrigerator">Холодильник</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-8">
+                        <div class="checkbox">
+                            <input name="washing_machine" id="washing_machine" value="1" type="checkbox"{{ object.washing_machine ? ' checked' : '' }}>
+                            <label for="washing_machine">Стиральная машина</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-8">
+                        <div class="checkbox">
+                            <input name="television" id="television" value="1" type="checkbox"{{ object.television ? ' checked' : '' }}>
+                            <label for="television">Телевизор</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-8">
+                        <div class="checkbox">
+                            <input name="is_telephone" id="is_telephone" value="1" type="checkbox"{{ object.is_telephone ? ' checked' : '' }}>
+                            <label for="is_telephone">Телефон</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-8">
+                        <div class="checkbox">
+                            <input name="internet" id="internet" value="1" type="checkbox"{{ object.internet ? ' checked' : '' }}>
+                            <label for="internet">Интернет</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-8">
+                        <div class="checkbox">
+                            <input name="children" id="children" value="1" type="checkbox"{{ object.children ? ' checked' : '' }}>
+                            <label for="children">Можно с детьми</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-8">
+                        <div class="checkbox">
+                            <input name="animal" id="animal" value="1" type="checkbox"{{ object.animal ? ' checked' : '' }}>
+                            <label for="animal">Можно с животными</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-18">
+                        <div class="divider horizontal">Контактные данные</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label">Имя</label>
+                    <div class="col-xs-8">
+                        <input name="fio" value="{{ object.fio }}" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label">Email продавца</label>
+                    <div class="col-xs-8">
+                        <input name="email" value="{{ object.email }}" type="text" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-5 control-label">Номер телефона<span style="color: red;">*</span></label>
+                    <div class="col-xs-8">
+                        <input id="phone" name="phone" type="text" class="form-control phone-mask" value="{{ object.phone }}" required data-error-msg="Укажите пожалуйста номер телефона">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-offset-5 col-xs-8">
+                        <button id="formsubmit" name="submit" class="btn btn-green">Отправить</button>
+                    </div>
+                </div>
+                <input type="hidden" name="active" value="{{ object.active }}" />
+                <input type="hidden" name="id" value="{{ user_ip }}" />
+                <input type="hidden" name="do" value="edit" />
+                <input type="hidden" name="key" value="{{ key }}" />
+            </form>
+        {% endif %}
+    </div>
+</div>
+<div class="col-md-8 col-lg-7 col-xl-6 hidden-xs hidden-sm">
+    <div class="sidebar sidebar-add notice-add">
+        <div class="add-side-title">Убедитесь, что соблюдаете правила размещения!</div>
+        <p>Нарушение правил размещения может повлечь за собой удаление объявления из поиска, блокировку аккаунта или номера телефона. </p>
+        <ul>
+            <li>объект сдается напрямую от собственника;</li>
+            <li>нет никаких комиссионных вознаграждений;</li>
+            <li>правильно выбран раздел для размещения; </li>
+            <li>указаны действительные и точные параметры объекта;</li>
+            <li>объект реально существует и предложение по нему актуально; </li>
+            <li>указана реальная цена объекта, и в неё включены все обязательные дополнительные платежи; </li>
+            <li>не указаны телефон, электронная почта или адрес сайта в описании или на фото;</li>
+            <li>использованы реальные фотографии объекта, и у вас есть права на их использование. </li>
+        </ul>
+    </div>
+    <div class="sidebar sidebar-add help-add">
+        <div class="add-side-title">Советы по размещению объявлений</div>
+        <ul>
+            <li>Максимально точно укажите все параметры.</li>
+            <li>Укажите разумную рыночную цену, такие объекты сдаются быстрее.</li>
+            <li>Добавьте фотографии, объявления с фото привлекают больше внимания.</li>
+            <li>Опишите объект как можно подробнее.</li>
+            <li>Укажите в объявлении телефон, который всегда будет доступен.</li>
+        </ul>
+    </div>
+</div>

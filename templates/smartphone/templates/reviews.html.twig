@@ -1,0 +1,37 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="link icon-only open-panel"><i class="icon mobile-menu"></i></a>
+        </div>
+        <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+        <div class="center sliding">NET-AGENTA.net</div>
+        <div class="right">
+            <a href="/" class="link icon-only external"><i class="f7-icons">search</i></a>
+        </div>
+    </div>
+</div>
+
+<div class="pages navbar-through toolbar-through">
+    <div data-page="reviews" class="page no-toolbar">
+        <!-- Scrollable page content -->
+        <div class="page-content hide-bars-on-scroll">
+            <div class="content-block">
+                {% if reviews %}
+                    <div class="reviews">
+                        {% for review in reviews %}
+                            <div class="review-item">
+                                <div class="review-fio">{{ review.author }}</div>
+                                <div class="review-date-add">{{ review.date|date_format }}</div>
+                                <div class="clearfix"></div>
+                                <div class="review-body">{{ review.review }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    Отзывы отсутствуют
+                {% endif %}
+            </div>
+            {% include 'footer.html.twig' %}
+        </div>
+    </div>
+</div>

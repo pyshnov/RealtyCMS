@@ -1,0 +1,42 @@
+<div class="content">
+    {{ breadcrumb }}
+    {{ title }}
+    {% if coordinate %}
+        <div class="map-block">
+            <script src="//api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
+            <script type="text/javascript">
+                var objects = {{ geodata }};
+                ymaps.ready(init);
+                function init () {
+                    var myMap = new ymaps.Map("mapMap", {
+                            center: [{{ coordinate }}],
+                            zoom: 9
+                        }, {
+                            searchControlProvider: 'yandex#search'
+                        }),
+                        clusterer = new ymaps.Clusterer({
+                            preset: 'islands#invertedDarkGreenClusterIcons',
+                            groupByCoordinates: false
+                        }),
+                        geoObjects = [];
+
+                    for (var i = 0; i < objects.length; i++) {
+                        geoObjects[i] = new ymaps.Placemark([Number(objects[i].geo_lat),Number(objects[i].geo_lng)], {
+                            balloonContentHeader: '<a href="'+objects[i].href+'">'+objects[i].type_sh+'</a>',
+                            balloonContentBody: objects[i].title
+                        }, {
+                            preset: 'islands#darkGreenDotIcon'
+                        });
+                    }
+                    clusterer.add(geoObjects);
+                    myMap.geoObjects.add(clusterer);
+                    myMap.behaviors.disable(['scrollZoom']);
+                    myMap.behaviors.enable(['multiTouch']);
+                }
+            </script>
+            <div id="mapMap"></div>
+        </div>
+    {% else %}
+        Не удалость получить координаты
+    {% endif %}
+</div>

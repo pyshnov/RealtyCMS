@@ -1,0 +1,184 @@
+<!-- Top Navbar-->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="link icon-only open-panel"><i class="icon mobile-menu"></i></a>
+        </div>
+        <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+        <div class="center sliding">NET-AGENTA.net</div>
+        <div class="right">
+            <span class="link icon-only">&nbsp;</span>
+        </div>
+    </div>
+</div>
+
+<!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
+<div class="pages navbar-through toolbar-through">
+    <!-- Page, "data-page" contains page name -->
+    <div data-page="index" class="page no-toolbar">
+        <!-- Scrollable page content -->
+        <div class="page-content hide-bars-on-scroll">
+
+                <form id="searchForm" action="{{ link_base_object }}" method="GET" class="ajax-submit">
+                    <div class="list-block list-block-search">
+                        <p class="buttons-row time-lease">
+                            <label class="button"><input type="radio" name="time_lease" value="1" checked>
+                                <span>Длительно</span>
+                            </label>
+                            <label class="button"><input type="radio" name="time_lease" value="2">
+                                <span>Посуточно</span>
+                            </label>
+                        </p>
+                        <ul>
+                            <li>
+                                <!-- Additional "smart-select" class -->
+                                <a href="#" class="item-link smart-select" data-open-in="popup" data-back-on-select="true" data-popup-close-text="Назад">
+                                    {{ category }}
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <!-- Select label -->
+                                            <div class="item-title">Тип объекта</div>
+                                            <!-- Selected value, not required -->
+                                            <div class="item-after"></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li>
+                                <!-- Additional "smart-select" class -->
+                                <a id="smartLocation" href="#" class="item-link smart-select" data-open-in="popup" data-popup-close-text="Назад" data-searchbar="true" data-searchbar-placeholder="Поиск..." data-back-on-select="true">
+                                    <!-- select -->
+                                    <select id="cityId" name="city_id">
+                                        <option value="{{ city_id }}" selected>{{ city_name }}</option>
+                                    </select>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <!-- Select label -->
+                                            <div class="item-title">Местоположение</div>
+                                            <!-- Selected value, not required -->
+                                            <div class="item-after"></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <li id="district"></li>
+                            <li id="metro"></li>
+                            <li>
+                                <!-- Additional "smart-select" class -->
+                                <a href="#" class="item-link smart-select" data-open-in="popup" data-back-on-select="true" data-popup-close-text="Назад">
+                                    <select name="posted_days">
+                                        <option value="0" selected>За все время</option>
+                                        <option value="1">За 1 день</option>
+                                        <option value="2">За 2 дня</option>
+                                        <option value="3">За 3 дня</option>
+                                        <option value="5">За 5 дней</option>
+                                        <option value="7">За 7 дней</option>
+                                    </select>
+                                    <div class="item-content">
+                                        <div class="item-inner">
+                                            <!-- Select label -->
+                                            <div class="item-title">Дата публикации</div>
+                                            <!-- Selected value, not required -->
+                                            <div class="item-after"></div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            <!-- Switch (Checkbox) -->
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">С фото</div>
+                                        <div class="item-after">
+                                            <label class="label-switch">
+                                                <input type="checkbox" name="has_photo" value="1">
+                                                <div class="checkbox"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Мебель</div>
+                                        <div class="item-after">
+                                            <label class="label-switch">
+                                                <input type="checkbox" name="furniture" value="1">
+                                                <div class="checkbox"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Холодильник</div>
+                                        <div class="item-after">
+                                            <label class="label-switch">
+                                                <input type="checkbox" name="refrigerator" value="1">
+                                                <div class="checkbox"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Стиральная машина</div>
+                                        <div class="item-after">
+                                            <label class="label-switch">
+                                                <input type="checkbox" name="washing_machine" value="1">
+                                                <div class="checkbox"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title label">Интернет</div>
+                                        <div class="item-after">
+                                            <label class="label-switch">
+                                                <input type="checkbox" name="internet" value="1">
+                                                <div class="checkbox"></div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content item-header">
+                                    <div class="item-inner inner-not-border">
+                                        <div class="item-title">Цена, <i class="symbol-ruble"></i></div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="item-content">
+                                    <div class="item-inner input-group">
+                                        <div class="item-input">
+                                            <input type="text" name="price_min" placeholder="От">
+                                        </div>
+                                        <div class="item-input">
+                                            <input type="text" name="price_max" placeholder="До">
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+
+
+                    <div class="content-block">
+                        <input type="submit" value="Найти" class="button button-big button-fill form-to-data" />
+                    </div>
+                </form>
+            {% include 'footer.html.twig' %}
+        </div>
+    </div>
+</div>

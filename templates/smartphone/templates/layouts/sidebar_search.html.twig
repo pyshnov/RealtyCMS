@@ -1,0 +1,189 @@
+{#
+/**
+ * @file
+ *
+ * Системные
+ * {{ district }}
+ * {{ metro }}
+ * {{ price_min}} - Минимальная цена, используется для фильтра
+ * {{ price_max }} - Максимальная цена, используется для фильтра
+ * {{ price_range }} - Минимальна - максимальная цена объектов для текущей локации
+ * - min
+ * - max
+ * {{ query_param }} - Параметры url запроса для фильтра
+ *
+ * Созданные для текущего шаблона
+ * {{ district_list }} - Преобразованный список районов {{ district }} для отображения в модальном окне
+ * {{ query_district_id }} - Список id районов переданных в url, используется для фильтра
+ * {{ districts_count }} - Количество районов для текущего города, используется для правильного отображения списка в модальном окне
+ * {{ metro_list }} - Преобразованный список метро {{ metro }} для отображения в модальном окне
+ * {{ query_metro_id }} - Список id метро переданных в url, используется для фильтра
+ * {{  }}
+ *
+ *
+ * @see system_theme_pre_process_base_objects()
+ * @see default_pre_process_base_objects()
+ * @see base_objects.html.twig
+ */
+#}
+<div class="sidebar side-search">
+    <div class="sidebar-title">Поиск</div>
+    <form id="sideSearch" method="get" action="{{ link_base_object }}">
+        <div class="sidebar-group">
+            <div class="btn-group btn-group-justified" data-toggle="buttons">
+                <label class="btn btn-default{{ filter_get_params.time_lease == 1 ? ' active' : '' }}">
+                    <input name="time_lease" class="time_lease" autocomplete="off" value="1"{{ filter_get_params.time_lease == 1 ? ' checked' : '' }} type="radio">Длительная
+                </label>
+                <label class="btn btn-default{{ filter_get_params.time_lease == 2 ? ' active' : '' }}">
+                    <input name="time_lease" class="time_lease" autocomplete="off" value="2"{{ filter_get_params.time_lease == 2 ? ' checked' : '' }} type="radio">Посуточная
+                </label>
+            </div>
+        </div>
+        <div class="sidebar-group">
+            {{ category }}
+        </div>
+
+        <div class="sidebar-group">
+            {% if district %}
+            <script>
+                district_id = [{{ query_district_id }}];
+            </script>
+            <button type="button" class="btn btn-default district-btn" data-toggle="modal" data-target="#districtModal">Район<span></span></button>
+            {% endif %}
+            {% if metro %}
+            <script>
+                metro_id = [{{ query_metro_id }}];
+            </script>
+            <button type="button" class="btn btn-default metro-btn" data-toggle="modal" data-target="#metroModal">Метро<span></span></button>
+            {% endif %}
+        </div>
+        {% if price_range.min is not null %}
+        <div class="sidebar-group">
+            <div class="s_s_pb-title">Бюджет</div>
+            <link href ="/core/assets/range_slider/css/ion.rangeSlider.css" rel="stylesheet" type="text/css">
+            <link href ="/core/assets/range_slider/css/ion.rangeSlider.skinModern.css" rel="stylesheet" type="text/css">
+            <script src="/core/assets/range_slider/js/ion.rangeSlider.min.js"></script>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $range = $("#example_id");
+
+                    $range.ionRangeSlider({
+                        type: "double",
+                        min: {{ price_range.min }},
+                        max: {{ price_range.max }},
+                        from: {{ search_price_min }}, // где стоит по умолчанию
+                        to: {{ search_price_max }},
+                        grid: true,
+                        grid_num: 2,
+                        step: 500,
+                        postfix: ' р'
+                    });
+
+                    $range.on("change", function () {
+                        var $this = $(this);
+                        $('[name=price_min]').val($this.data("from"));
+                        $('[name=price_max]').val($this.data("to"));
+                    });
+                });
+            </script>
+            <span id="example_id"></span>
+            <input type="hidden" name="price_min" value="{{ search_price_min }}">
+            <input type="hidden" name="price_max" value="{{ search_price_max }}">
+        </div>
+        {% endif %}
+        <div class="sidebar-group">
+            <div class="field">
+                <div class="radio checkbox">
+                    <input id="postedDays" name="posted_days" value="0" type="radio"{{ filter_get_params.posted_days == 0 ? ' checked' : '' }}>
+                    <label for="postedDays">За все время</label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="radio checkbox">
+                    <input id="postedDays1" name="posted_days" value="1" type="radio"{{ filter_get_params.posted_days == 1 ? ' checked' : '' }}>
+                    <label for="postedDays1">За сегодня</label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="radio checkbox">
+                    <input id="postedDays3" name="posted_days" value="3" type="radio"{{ filter_get_params.posted_days == 3 ? ' checked' : '' }}>
+                    <label for="postedDays3">За 3 дня</label>
+                </div>
+            </div>
+            <div class="field">
+                <div class="radio checkbox">
+                    <input id="postedDays7" name="posted_days" value="7" type="radio"{{ filter_get_params.posted_days == 7 ? ' checked' : '' }}>
+                    <label for="postedDays7">За 7 дней</label>
+                </div>
+            </div>
+            <div class="sidebar-group">
+                <div class="checkbox">
+                    <input name="has_photo" id="hasPhoto" value="1" type="checkbox"{{ filter_get_params.has_photo ? ' checked' : '' }}>
+                    <label for="hasPhoto">Только с фото</label>
+                </div>
+            </div>
+            <a id="reset" class="pull-right" href="{{ link_base_object }}">Сбросить фильтр</a>
+        </div>
+        <input type="submit" value="Найти" class="btn btn-green btn-block" />
+    </form>
+</div>
+<div class="hidden-xs hidden-sm">
+    <div id="yandex_ads">
+        <div class="sidebar">
+            <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-5036721344262288"
+                 data-ad-slot="3621112056"
+                 data-ad-format="auto"></ins>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+    </div>
+</div>
+{% if district %}
+    <!-- Modal -->
+    <div class="modal fade modal-filter" id="districtModal" tabindex="-1" role="dialog" aria-labelledby="districtModalLabel">
+        <div class="modal-dialog modal-district" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="modal-title" id="metroModalLabel">Район</div>
+                </div>
+                <div class="modal-body" data-spy="scroll">
+                    <div class="col-xs-12 col-sm-8">
+                        {{ district_list }}
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-green" type="button" data-dismiss="modal">Применить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% if metro %}
+    <!-- Modal -->
+    <div class="modal fade modal-filter" id="metroModal" tabindex="-1" role="dialog" aria-labelledby="metroModalLabel">
+        <div class="modal-dialog modal-metro" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="modal-title" id="metroModalLabel">Метро</div>
+                </div>
+                <div class="modal-body" data-spy="scroll">
+                    <div class="col-xs-12 col-sm-8">
+                        {{ metro_list }}
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-green" type="button" data-dismiss="modal">Применить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

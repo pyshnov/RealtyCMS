@@ -1,0 +1,187 @@
+{#
+/**
+* {{ head|raw }}
+* {{ css|raw }}
+* {{ js.head|raw }}
+* {{ js.footer|raw }}
+* {{ is_smartphone }}
+* {{ is_tablet }}
+* {{ is_desktop }}
+* {{ is_debug }}
+* {{ charset }}
+* {{ is_admin }}
+* {{ is_authenticated }}
+* {{ is_anonymous }}
+* {{ key }}
+* {{ user_ip }}
+*
+*
+*/
+#}
+<!doctype html>
+<html lang="ru">
+<head>
+    {{ head|raw }}
+    <meta property="og:image" content="http://net-agenta.net/templates/default/img/view-logo.jpg">
+    <meta name='yandex-verification' content='66853d6166899c59' />
+    <meta name="google-site-verification" content="dw9wTdmCMMKS77gkuESpMbRJl9tMQnM45JHc0a0V2GU" />
+    <meta name='wmail-verification' content='bbf34cf81c754683e7dc8b453b52b4aa' />
+    <link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-static-top">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="header_geoselector">{{ city_name }} <span class="caret"></span></a>
+                </li>
+            </ul>
+            <span class="navbar-text">— &nbsp; {{ count_object_city }} {{ count_object_city|plural('объект', 'объекта', 'объектов') }} недвижимости в базе</span>
+            <ul class="nav navbar-nav pull-right">
+                {% if is_anonymous %}
+                    <li class="nav-auth"><a data-toggle="modal" data-target="#modalAuth" href="#">Вход</a>/<a href="/register/">Регистрация</a></li>
+                {% else %}
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Личный кабинет <span class="caret animated"></span></a>
+                        <ul class="dropdown-menu animated fadeIn">
+                            <li class="drop-first"></li>
+                            {% if is_admin %}
+                                <li><a href="/admin/">Админпанель</a></li>
+                            {% endif %}
+                            <li><a href="/add/">Добавить объявление</a></li>
+                            <li><a href="/account/data/">Мои объявления</a></li>
+                            <li><a href="/account/profile/">Мой профиль</a></li>
+                            <li><a href="/favorites/">Избранное (<span class="favorites_count">{{ favorites|length }}</span>)</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/logout/">Выход</a></li>
+                        </ul>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    <div class="header">
+        <div class="container">
+            <div class="logo pull-left"><a href="/" title="Онлайн база жилой недвижимости без посредников"><img src="/templates/default/img/logo2.png" alt="Онлайн база жилой недвижимости без посредников {{ site_name }}"></a></div>
+            <div class="header-slogan pull-left hidden-xs hidden-sm">
+                База недвижимости {{ city_name('r') }} за {{ 'now'|date('Y') }} год
+            </div>
+            <div class="header-button-add pull-right">
+                <a href="/add/" class="btn btn-green"><i class="fa fa-plus" aria-hidden="true"></i>&nbsp Новое объявление</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="navbar navbar-default nav-full">
+        <div class="container">
+            <ul class="nav navbar-nav">
+                <li><a href="{{ link_base_object }}" title="База объектов">База объектов</a></li>
+                <li><a href="/map/" title="Ссылка">Поиск на карте</a></li>
+                <li><a href="/printsip-raboti/" class="hidden-sm hidden-xs">Принцип работы</a></li>
+                <li><a href="/reviews/">Отзывы</a></li>
+                <li><a href="/faq/">Вопрос - ответ</a></li>
+                <li><a href="/help/">Помощь проекту</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="{{ is_main ? 'container-fluid' : 'container' }}  {{ class_content }}">
+        {{ content }}
+    </div>
+    {% include 'footer.html.twig' %}
+    {% if is_anonymous %}
+        <!-- Modal -->
+        <div class="modal fade" id="modalAuth" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog modal-login" role="document">
+                <div class="modal-content animated flipInY">
+                    <div class="pnmodal">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть"><span
+                                        aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Вход</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="ajaxFormLogin" class="form" role="form">
+                                <div class="ajax-error"></div>
+                                <div class="form-group">
+                                    <input placeholder="Email или логин" class="form-control" type="text" required min="3" data-error-msg="Необходимо ввести Email или логин"
+                                           name="email">
+                                </div>
+                                <div class="form-group">
+                                    <input placeholder="Пароль" class="form-control" type="password" required min="4" data-error-msg="Необходимо ввести пароль"
+                                           name="pass" autocomplete="off">
+                                    <span>
+                                        <a href="/restore/">Напомнить?</a>
+                                    </span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <input name="rememberme" id="CheckLogin" tabindex="0" type="checkbox">
+                                        <label for="CheckLogin">Запомнить меня</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-green pull-left" type="submit"><strong>Войти</strong></button>
+                                </div>
+                            </form>
+                            <div class="clearfix"></div>
+                            <div class="modal-register">Вы здесь впервые?<br> <a class="link" href="/register/">Зарегистрироваться</a>
+                            </div>
+                            <div class="horizontal divider">Или</div>
+                            <div class="modal-text-social">Быстрый вход через социальные сети</div>
+                            {{ social_auther }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    {{ js.footer|raw }}
+    <script type="text/javascript" src="//vk.com/js/api/openapi.js?136"></script>
+
+    <!-- VK Widget -->
+    <div id="vk_community_messages"></div>
+    <script type="text/javascript">
+        VK.Widgets.CommunityMessages("vk_community_messages", 41878699, {tooltipButtonText: "Есть вопрос?"});
+    </script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (d, w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                    w.yaCounter26097690 = new Ya.Metrika({
+                        id:26097690,
+                        clickmap:true,
+                        trackLinks:true,
+                        accurateTrackBounce:true,
+                        webvisor:true
+                    });
+                } catch(e) { }
+            });
+
+            var n = d.getElementsByTagName("script")[0],
+                s = d.createElement("script"),
+                f = function () { n.parentNode.insertBefore(s, n); };
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+            if (w.opera == "[object Opera]") {
+                d.addEventListener("DOMContentLoaded", f, false);
+            } else { f(); }
+        })(document, window, "yandex_metrika_callbacks");
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/26097690" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+                (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+        ga('create', 'UA-56276073-1', 'auto');
+        ga('send', 'pageview');
+
+    </script>
+</body>
+</html>

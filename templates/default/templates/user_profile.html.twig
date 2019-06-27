@@ -1,0 +1,69 @@
+<div class="row">
+    <div class="col-md-6 col-lg-5">
+        <div class="row">
+            {% include 'sidebar_account.html.twig' %}
+        </div>
+    </div>
+    <div class="col-sm-24 col-md-18 col-lg-19 content">
+        {{ breadcrumb }}
+        {{ title }}
+        <div class="messages"></div>
+        <form id="profileEdit" class="form-horizontal" method="post">
+            <div class="form-group">
+                <div class="col-xs-offset-6 col-xs-9">
+                    <div class="divider horizontal">Контактная информация</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-6 control-label">ФИО:</label>
+                <div class="col-xs-9">
+                    <input class="form-control" type="text" name="fio" value="{{ user.fio }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-6 control-label">Эл. почта:</label>
+                <div class="col-xs-9">
+                    <input class="form-control" type="text" name="email" value="{{ user.email }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-6 control-label">Телефон:</label>
+                <div class="col-xs-9">
+                    <input class="form-control phone-mask" type="text" name="phone" value="{{ user.phone }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-6 col-xs-9">
+                    <button type="submit" class="btn btn-green btn-block" value="save">Сохранить</button>
+                </div>
+            </div>
+        </form>
+        <form id="profilePassEdit" class="form-horizontal" method="post">
+            <div class="form-group">
+                <div class="col-xs-offset-6 col-xs-9">
+                    <div class="divider horizontal">Смена пароля</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-6 col-xs-9">
+                    <input class="form-control" type="password" name="password_old" placeholder="Текущий пароль" min="4" data-error-msg="Укажите текущий пароль" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-6 col-xs-9">
+                    <input class="form-control" type="password" name="password_new" placeholder="Новый пароль" min="4" data-error-msg="Поле не может быть пустым (мин. 4 символа)" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-6 col-xs-9">
+                    <input class="form-control" type="password" name="password_new_repeat" placeholder="Новый пароль еще раз" min="4" data-error-msg="Поле не может быть пустым (мин. 4 символа)" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-xs-offset-6 col-xs-9">
+                    <button type="submit" class="btn btn-green btn-block" value="save">Сохранить</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,16 @@
+data.realty.view:
+  path: '/arenda/{topic}/realty{id}{_postfix}'
+  defaults:
+    _controller: '\Pyshnov\data\Controller\DataController::realtyView'
+    _format: html
+  requirements:
+    id: \d+
+    _postfix: /|.html
+data.arenda:
+  path: '/{_location}/arenda/'
+  defaults:
+    _controller: '\Pyshnov\data\Controller\DataController::topic'
+data.arenda.topic:
+  path: '/{_location}/arenda/{_topic}/'
+  defaults:
+    _controller: '\Pyshnov\data\Controller\DataController::topic'

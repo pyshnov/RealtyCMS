@@ -1,0 +1,64 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="link icon-only open-panel"><i class="icon mobile-menu"></i></a>
+        </div>
+        <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+        <div class="center sliding">Регистрация</div>
+        <div class="right">
+            <a href="/" class="link icon-only external"><i class="f7-icons">search</i></a>
+        </div>
+    </div>
+</div>
+
+<div class="pages navbar-through toolbar-through">
+    <div data-page="user-register" class="page no-toolbar">
+        <!-- Scrollable page content -->
+        <div class="page-content hide-bars-on-scroll">
+            <form id="registerForm" class="ajax-submit" action="/register/" method="POST">
+                <div class="list-block">
+                    <ul>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <input type="text" name="email" placeholder="Email">
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <input type="password" name="password" placeholder="Пароль">
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <input type="password" name="password2" placeholder="Повторите пароль">
+                                </div>
+                            </div>
+                        </li>
+                        <li class="item-content">
+                            <div class="item-inner">
+                                <div class="item-input">
+                                    <input type="text" name="fio" placeholder="Ваше имя">
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                <input type="hidden" name="do" value="register">
+                <div class="list-block">
+                    <div class="list-block-label">
+                        Регистрируясь, вы принимаете условия<br>
+                        <a href="/polzovatelskoe-soglashenie/">пользовательского соглашения</a>
+                    </div>
+                </div>
+                <div class="content-block">
+                    <input type="submit" value="Зарегистрироваться" class="button button-big form-to-data" />
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

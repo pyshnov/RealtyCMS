@@ -1,0 +1,41 @@
+User-agent: *
+
+# CSS, JS, Images
+Allow: /core/*.css$
+Allow: /core/*.css?
+Allow: /core/*.js$
+Allow: /core/*.js?
+Allow: /core/*.gif
+Allow: /core/*.jpg
+Allow: /core/*.jpeg
+Allow: /core/*.png
+Allow: /core/*.svg
+Allow: /templates/*?v=
+Allow: /templates/*.css$
+Allow: /templates/*.css?
+Allow: /templates/*.js$
+Allow: /templates/*.js?
+Allow: /templates/*.gif
+Allow: /templates/*.jpg
+Allow: /templates/*.jpeg
+Allow: /templates/*.png
+Allow: /templates/*.svg
+
+# Directories
+Disallow: /core/
+# Files
+Disallow: /README.txt
+Disallow: /web.config
+# Paths (clean URLs)
+Disallow: /admin/
+Disallow: /logout/
+Disallow: /account/
+Disallow: /remind/
+Disallow: /register/
+Disallow: /*?*
+Disallow: /cgi-bin
+Disallow: /cgi-sys
+
+Host: arenda.pyshnov.ru
+
+Sitemap: http://arenda.pyshnov.ru/sitemap.xml

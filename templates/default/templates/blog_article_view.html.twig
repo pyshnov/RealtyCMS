@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-sm-24 col-md-18 col-lg-19 content wrapper-blog">
+        {{ breadcrumb }}
+        {{ title }}
+        <div class="article-date text-muted"><i class="fa fa-clock-o fa-fw" aria-hidden="true"></i> {{ page.date|date_format }}</div>
+        {{ page.body }}
+        <div class="divider"></div>
+        <span class="pull-left text-muted"><i class="fa fa-eye fa-fw" aria-hidden="true"></i> {{ page.views }}</span>
+        <span class="pull-right">
+            <script type="text/javascript" src="//yastatic.net/share/share.js" charset="utf-8"></script>
+            <div class="yashare-auto-init" data-yashareL10n="ru" data-yashareType="small" data-yashareQuickServices="vkontakte,facebook,twitter,odnoklassniki,moimir" data-yashareTheme="counter"></div>
+        </span>
+        <div class="clearfix"></div>
+    </div>
+    <div class="col-md-6 col-lg-5 hidden-xs hidden-sm">
+        <div class="row">
+            <div class="sidebar sidebar-menu">
+                <a class="nav-link" href="/blog/">Все статьи</a>
+                <a class="nav-link" href="/blog/sovety/">Советы</a>
+                <a class="nav-link" href="/blog/novosti-rynka/">Новости рынка</a>
+                <a class="nav-link" href="/blog/istorii/">Истории</a>
+            </div>
+
+            <div class="sidebar adsense">
+                <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-5036721344262288"
+                     data-ad-slot="3621112056"
+                     data-ad-format="auto"></ins>
+                <script>
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,206 @@
+<!-- Top Navbar-->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            {% if is_xml %}
+            <a href="#" class="back link">
+                <i class="f7-icons">left</i>
+            </a>
+            {% else %}
+                <a href="#" class="link icon-only open-panel">
+                    <i class="icon mobile-menu"></i>
+                </a>
+            {% endif %}
+        </div>
+        <div class="center sliding">NET-AGENTA.net</div>
+        <div class="right">
+            <a href="/" class="link icon-only external"><i class="f7-icons">search</i></a>
+        </div>
+    </div>
+</div>
+<!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
+<div class="pages navbar-through toolbar-through">
+    <!-- Page, "data-page" contains page name -->
+    <div data-page="data-view" class="page no-toolbar">
+        <!-- Scrollable page content -->
+        <div class="page-content hide-bars-on-scroll realty-view">
+            {% if data.image.count() %}
+                <div class="view-photo">
+                    <div class="fotorama swipe-panel-ignore"
+                         data-width="100%"
+                         data-keyboard="true"
+                         data-startindex="0"
+                         data-fit="contain"
+                         data-arrows="false"
+                         data-click="true"
+                         data-swipe="true"
+                         data-allowfullscreen="native"
+                         data-nav="false">
+                        {% for image in data.image.toArray() %}
+                            <a href="/image/?src=/uploads/data/{{ image.name }}&w=480&h=320" data-full="/uploads/data/{{ image.name }}"></a>
+                        {% endfor %}
+                    </div>
+                    <div class="fotorama__photo-counter"></div>
+                </div>
+            {% endif %}
+            <div class="content-block">
+                <div class="date-views">
+                    <span>{{ data.getDataAdd() }}</span>
+                    <span><i class="f7-icons">eye</i> {{ data.view_count }} {{ data.view_count|plural('раз', 'раза', 'раз') }}</span>
+                </div>
+                <h1 class="view-title">{{ data.topic_id == 6 ? data.room_count : '' }}{{ data.topic.name_list }} в аренду</h1>
+                <div class="view-address">
+                    {% set time_metro = data.time_metro ? ', ' ~ data.getTimeMetro : '' %}
+                    {{ data.getAddress() }}<br>
+                    {{ data.metro ? 'ст. ' ~ data.getMetro('') ~ time_metro : '' }}
+                </div>
+                <div class="view-price">{{ data.getPrice() }}</div>
+                <div class="view-to-call">
+                    <a href="tel:+{{ data.phone }}" class="button button-big button-fill external">Позвонить</a>
+                </div>
+                <div class="divider"></div>
+                <div class="view-description">
+                    {{ data.text|raw|nl2br }}
+                </div>
+                <div class="v-line-title">Характеристики помещения</div>
+                {% if data.square_all %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Площадь общая</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">{{ data.square_all }} м<sup>2</sup></div>
+                    </div>
+                {% endif %}
+                {% if data.square_rooms %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Площадь комнат{{ data.topic_id == 2 or data.topic_id == 3 ? 'ы' : '' }}</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">{{ data.square_rooms }} м<sup>2</sup></div>
+                    </div>
+                {% endif %}
+                {% if data.square_kitchen %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Площадь кухни</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">{{ data.square_kitchen }} м<sup>2</sup></div>
+                    </div>
+                {% endif %}
+                {% if data.room_count %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Количество комнат</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">{{ data.room_count }}</div>
+                    </div>
+                {% endif %}
+                {% if data.bathroom %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Санузел</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">{{ data.getBathroom() }}</div>
+                    </div>
+                {% endif %}
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Этаж</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.getFloor(' из ') }}</div>
+                </div>
+                <div class="v-line-title">Детали</div>
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Мебель</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.furniture ? 'Да' : 'Нет' }}</div>
+                </div>
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Холодильник</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.refrigerator ? 'Да' : 'Нет' }} </div>
+                </div>
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Стир. машина</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.washing_machine ? 'Да' : 'Нет' }}</div>
+                </div>
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Телевизор</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.television ? 'Да' : 'Нет' }} </div>
+                </div>
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Телефон</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.is_telephone ? 'Да' : 'Нет' }}</div>
+                </div>
+                {% if data.internet %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Интернет</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">Да</div>
+                    </div>
+                {% endif %}
+                {% if data.children %}
+                    <div class="v-dotted-line">
+                        <div class="v-dotted-line__left">
+                            <span class="v-dotted-line__title">Можно с детьми</span>
+                            <div class="v-dotted-line__line"></div>
+                        </div>
+                        <div class="v-dotted-line__right">Да</div>
+                    </div>
+                {% endif %}
+                <div class="v-dotted-line">
+                    <div class="v-dotted-line__left">
+                        <span class="v-dotted-line__title">Можно с животными</span>
+                        <div class="v-dotted-line__line"></div>
+                    </div>
+                    <div class="v-dotted-line__right">{{ data.animal ? 'Да' : 'Нет' }}</div>
+                </div>
+                <div class="view-contacts">
+                    <div class="v-line-title">Контакты</div>
+                    <div class="fio">
+                        {{ data.fio ? : 'Собственник' }}
+                    </div>
+
+                    <div class="phone">+7 ({{ data.phone|slice(-10, 3) }}) XXX-XX-XX</div>
+
+                    <span id="openPhone" data-id="{{ data.id }}" class="button button-big button-fill external">
+                        <i class="f7-icons">phone_fill</i> Показать телефон
+                    </span>
+                </div>
+                {{ data_complaint_html }}
+
+                <div class="static-map">
+                    <img class="map-img" src="https://static-maps.yandex.ru/1.x/?ll={{ data.geo_lng }},{{ data.geo_lat }}&amp;size=600,200&amp;z=15&amp;l=map&amp;pt={{ data.geo_lng }},{{ data.geo_lat }},pm2gnl">
+                </div>
+
+                <div class="popup popup-map">
+                    <div class="popup-map-body">
+                        <div id="map" data-geo="{{ data.geo_lat }},{{ data.geo_lng }}"></div>
+                    </div>
+                </div>
+            </div>
+            {% include 'footer.html.twig' %}
+        </div>
+    </div>
+</div>

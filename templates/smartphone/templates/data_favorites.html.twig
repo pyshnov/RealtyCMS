@@ -1,0 +1,46 @@
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="left">
+            <a href="#" class="link icon-only open-panel"><i class="icon mobile-menu"></i></a>
+        </div>
+        <!-- We need cool sliding animation on title element, so we have additional "sliding" class -->
+        <div class="center sliding">NET-AGENTA.net</div>
+        <div class="right">
+            <a href="/" class="link icon-only external"><i class="f7-icons">search</i></a>
+        </div>
+    </div>
+</div>
+<!-- Pages container, because we use fixed-through navbar and toolbar, it has additional appropriate classes-->
+<div class="pages navbar-through toolbar-through">
+    <!-- Page, "data-page" contains page name -->
+    <div data-page="data-favorites" class="page no-toolbar">
+        <!-- Scrollable page content -->
+        <div class="page-content hide-bars-on-scroll">
+            {% if data.count %}
+                <div class="list-block media-list realty-list">
+                    <ul>
+                        {% for object in data.rows %}
+                            <li>
+                                <a href="{{ object.getLink() }}" class="item-link item-content">
+                                    <div class="item-media">{{ object.getImage() }}</div>
+                                    <div class="item-inner">
+                                        <div class="item-title-row">
+                                            <div class="item-title">{{ object.getPrice('<i class="rub">o</i>') }}<br>{{ object.category.id == 6 ? object.room_count : '' }}{{ object.category.name_list }}, {{ object.square() }} м<sup>2</sup>, {{ object.getFloor() }} этаж</div>
+                                        </div>
+                                        <div class="item-subtitle">{{ object.getAddress() }}</div>
+                                        <div class="item-text">{{ object.getMetro('') }}</div>
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% else %}
+                <div class="content-block">
+                    <p>Вы не добавили в избранное ни одного предложения.</p>
+                </div>
+            {% endif %}
+            {% include 'footer.html.twig' %}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,45 @@
+<div class="content">
+    <div class="restore-pass">
+        {% if success %}
+            <div class="messages">
+                {{ message }}
+            </div>
+        {% else %}
+            {% if error %}
+                <div class="messages messages--error">
+                    {% for item in error %}
+                        {{ item }} <br>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            <form action="/restore/" method="post">
+                {% if form == 1 %}
+                    {% if error == false %}
+                        <p class="text-muted m-small">На указанный адрес электронной почты будет отправлена инструкция по восстановлению пароля.</p>
+                    {% endif %}
+                    <div class="form-group">
+                        <div class="controls">
+                            <input class="form-control" type="text" name="email" value="" placeholder="Email">
+                        </div>
+                    </div>
+                    <input type = "submit" name="restore" class="btn btn-green btn-block" value="Отправить" >
+                {% elseif form == 2 %}
+                    <p class="text-muted m-small">Придумайте новый пароль.</p>
+
+                    <div class="control-group form-group">
+                        <div class="controls ">
+                            <input class="form-control" type="password" name="password_new" value="" placeholder="Пароль">
+                        </div>
+                    </div>
+                    <div class="control-group form-group">
+                        <div class="controls">
+                            <input class="form-control" type="password" name="password_new_repeat" value="" placeholder="Повторите пароль">
+                        </div>
+                    </div>
+                    <input type = "submit" name="change_pass" class="btn btn-green" value="Отправить" >
+                {% endif %}
+            </form>
+        {% endif %}
+    </div>
+
+</div>
