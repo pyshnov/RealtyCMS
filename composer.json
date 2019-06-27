@@ -9,7 +9,7 @@
         "wikimedia/composer-merge-plugin": "^1.0"
     },
     "replace": {
-        "pyshnov/core": "~0.0.18"
+        "pyshnov/core": "~0.0.1"
     },
     "extra": {
         "merge-plugin": {
